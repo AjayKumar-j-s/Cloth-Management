@@ -48,67 +48,69 @@ const AddClient = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#4F7E9A] via-[#6ea6bd] to-[#4F7E9A] p-6">
-      <div className="bg-white/20 backdrop-blur-xl shadow-2xl rounded-2xl p-8 w-full max-w-lg text-gray-900">
+    <div className="min-h-screen flex items-center justify-center p-6">
+      <div className="glass-strong p-8 w-full max-w-lg">
         
         {/* Title */}
-        <h2 className="text-2xl font-bold text-center text-white mb-6 drop-shadow-md">
+        <h2 className="text-2xl font-bold text-center text-cyan-300 mb-6 drop-shadow-neon">
           ➕ Add New Client
         </h2>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5 text-slate-900">
+          <label className="form-label">Client Name</label>
           <input
             type="text"
             name="name"
-            placeholder="Client Name"
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4F7E9A] shadow-sm"
+            className="form-control"
           />
+          <label className="form-label">Deadline</label>
           <input
             type="date"
             name="deadline"
             value={formData.deadline}
             onChange={handleChange}
             required
-            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4F7E9A] shadow-sm"
+            className="form-control"
           />
+          <label className="form-label">Contact Person</label>
           <input
             type="text"
             name="contact"
-            placeholder="Contact Person"
             value={formData.contact}
             onChange={handleChange}
             required
-            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4F7E9A] shadow-sm"
+            className="form-control"
           />
+          <label className="form-label">Email Address</label>
           <input
             type="email"
             name="email"
-            placeholder="Email Address"
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4F7E9A] shadow-sm"
+            className="form-control"
           />
+          <label className="form-label">Phone Number</label>
           <input
             type="tel"
             name="phone"
-            placeholder="Phone Number"
             value={formData.phone}
             onChange={handleChange}
             required
-            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4F7E9A] shadow-sm"
+            className="form-control"
           />
 
           {/* GST Dropdown */}
+          <label className="form-label">GST Status</label>
           <select
             name="gst"
             value={formData.gst}
             onChange={handleChange}
-            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4F7E9A] shadow-sm"
+            className="form-control"
           >
             <option value="">Select GST Status</option>
             <option value="Yes">Yes</option>
@@ -116,21 +118,22 @@ const AddClient = () => {
           </select>
 
           {/* Address */}
+          <label className="form-label">Address</label>
           <textarea
             name="address"
-            placeholder="Address"
             value={formData.address}
             onChange={handleChange}
             required
-            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4F7E9A] shadow-sm"
+            className="form-control"
           />
 
           {/* Payment Dropdown */}
+          <label className="form-label">Payment Status</label>
           <select
             name="payment"
             value={formData.payment}
             onChange={handleChange}
-            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4F7E9A] shadow-sm"
+            className="form-control"
           >
             <option value="Not Paid">Not Paid</option>
             <option value="Paid">Paid</option>
@@ -138,25 +141,25 @@ const AddClient = () => {
 
           {/* Invoice Upload */}
           <div>
-            <label className="block mb-1 text-white font-semibold">Invoice (PDF)</label>
+            <label className="form-label">Invoice (PDF)</label>
             <input
               type="file"
               name="invoice"
               accept="application/pdf"
               onChange={handleFileChange}
-              className="w-full p-2 rounded-lg bg-white/30 text-white border border-gray-300 focus:outline-none"
+              className="w-full p-2 rounded-md bg-white text-slate-900 border border-slate-300 focus:outline-none"
             />
           </div>
 
           {/* LR Upload */}
           <div>
-            <label className="block mb-1 text-white font-semibold">LR (Image)</label>
+            <label className="form-label">LR (Image)</label>
             <input
               type="file"
               name="lr"
               accept="image/*"
               onChange={handleFileChange}
-              className="w-full p-2 rounded-lg bg-white/30 text-white border border-gray-300 focus:outline-none"
+              className="w-full p-2 rounded-md bg-white text-slate-900 border border-slate-300 focus:outline-none"
             />
           </div>
 
@@ -165,13 +168,13 @@ const AddClient = () => {
             <button
               type="button"
               onClick={() => navigate("/")}
-              className="px-6 py-2 rounded-lg bg-gray-500 text-white hover:bg-gray-600 transition-all shadow-md"
+              className="px-6 py-2 rounded-lg bg-slate-800 text-white hover:bg-slate-700 transition-all shadow"
             >
               ⬅ Back
             </button>
             <button
               type="submit"
-              className="px-6 py-2 rounded-lg bg-[#4F7E9A] hover:bg-[#3b6275] text-white font-semibold transition-all shadow-lg"
+              className="px-6 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-semibold transition-all shadow-neon"
             >
               ✅ Submit
             </button>

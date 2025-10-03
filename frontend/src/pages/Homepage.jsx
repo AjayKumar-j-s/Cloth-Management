@@ -48,6 +48,23 @@ const Homepage = () => {
     }
   };
 
+  const handleSendReminder = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/clients/${id}/send-reminder`, {
+        method: "POST",
+      });
+      const result = await res.json();
+      if (result.success) {
+        alert("✅ Reminder email sent!");
+      } else {
+        alert("❌ Failed to send reminder: " + (result.message || result.error || "Unknown error"));
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Server error while sending reminder!");
+    }
+  };
+
   const filteredClients = paymentFilter
     ? clients.filter((c) => c.payment === paymentFilter)
     : clients;
@@ -56,12 +73,12 @@ const Homepage = () => {
     {
       name: "Paid",
       value: filteredClients.filter((c) => c.payment === "Paid").length,
-      fill: "#4caf50",
+      fill: "#22d3ee" // cyan-400 for high contrast
     },
     {
       name: "Not Paid",
       value: filteredClients.filter((c) => c.payment === "Not Paid").length,
-      fill: "#f44336",
+      fill: "#fb7185" // rose-400 for high contrast
     },
   ];
 
@@ -75,10 +92,10 @@ const Homepage = () => {
   };
 
   return (
-    <div className="p-8 min-h-screen bg-gradient-to-br from-[#4F7E9A] via-[#5a9bb8] to-[#4F7E9A] text-gray-900">
+    <div className="p-8 min-h-screen text-gray-900">
       {/* Title */}
       <motion.h1
-        className="text-4xl font-extrabold mb-8 text-center text-white drop-shadow-lg"
+        className="text-4xl md:text-5xl font-extrabold mb-8 text-center text-cyan-300 drop-shadow-neon tracking-wide"
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
       >
@@ -89,66 +106,79 @@ const Homepage = () => {
       <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
         {/* Filters */}
         <motion.div
-          className="flex space-x-4 bg-white/20 backdrop-blur-md p-4 rounded-2xl shadow-lg"
+          className="flex flex-wrap gap-4 glass-card p-4"
           initial={{ x: -80, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
         >
-          <select
-            value={paymentFilter}
-            onChange={(e) => setPaymentFilter(e.target.value)}
-            className="border px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#4F7E9A] transition-all"
-          >
-            <option value="">Filter by Payment</option>
-            <option value="Paid">Paid</option>
-            <option value="Not Paid">Not Paid</option>
-          </select>
+          <div>
+            <label className="form-label">Payment</label>
+            <select
+              value={paymentFilter}
+              onChange={(e) => setPaymentFilter(e.target.value)}
+              className="form-control min-w-[180px]"
+            >
+              <option value="">All</option>
+              <option value="Paid">Paid</option>
+              <option value="Not Paid">Not Paid</option>
+            </select>
+          </div>
 
-          <select
-            value={gst}
-            onChange={(e) => setGst(e.target.value)}
-            className="border px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#4F7E9A] transition-all"
-          >
-            <option value="">Filter by GST</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
+          <div>
+            <label className="form-label">GST</label>
+            <select
+              value={gst}
+              onChange={(e) => setGst(e.target.value)}
+              className="form-control min-w-[160px]"
+            >
+              <option value="">All</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
 
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-            className="border px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#4F7E9A] transition-all"
-          >
-            <option value="">Sort</option>
-            <option value="duedate">Sort by Due Date</option>
-          </select>
+          <div>
+            <label className="form-label">Sort</label>
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              className="form-control min-w-[180px]"
+            >
+              <option value="">Default</option>
+              <option value="duedate">By Due Date</option>
+            </select>
+          </div>
         </motion.div>
 
         {/* Radial Chart */}
         <motion.div
-          className="w-52 h-52 relative cursor-pointer bg-white/10 backdrop-blur-xl p-4 rounded-full shadow-2xl"
+          className="w-56 h-56 relative cursor-pointer glass-strong p-4 rounded-full shadow-neon border border-cyan-400/20"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 100 }}
         >
           <ResponsiveContainer width="100%" height="100%">
             <RadialBarChart
-              innerRadius="70%"
+              innerRadius="68%"
               outerRadius="100%"
-              barSize={20}
+              barSize={18}
               data={chartData}
               startAngle={90}
               endAngle={-270}
               onClick={handleChartClick}
             >
-              <RadialBar minAngle={15} background clockWise dataKey="value" />
-              <Tooltip />
+              <RadialBar minAngle={12} background={{ fill: "rgba(255,255,255,0.08)" }} cornerRadius={8} clockWise dataKey="value" />
+              <Tooltip 
+                contentStyle={{ background: "rgba(15,23,42,0.9)", border: "1px solid rgba(34,211,238,0.3)", borderRadius: 8, color: "#e2e8f0" }} 
+                itemStyle={{ color: "#e2e8f0" }} 
+                labelStyle={{ color: "#22d3ee" }}
+              />
             </RadialBarChart>
           </ResponsiveContainer>
           <div className="absolute inset-0 flex flex-col justify-center items-center pointer-events-none">
-            <span className="text-3xl font-bold text-white drop-shadow-md">
+            <span className="text-3xl font-bold text-cyan-300 drop-shadow-neon">
               {totalClients}
             </span>
-            <span className="text-gray-200 text-sm">Total Clients</span>
+            <span className="text-cyan-200 text-sm">Total Clients</span>
           </div>
         </motion.div>
       </div>
@@ -158,19 +188,19 @@ const Homepage = () => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => navigate("/addclient")}
-        className="bg-[#4F7E9A] hover:bg-[#3b6275] transition-colors duration-300 text-white px-6 py-3 rounded-xl shadow-lg font-semibold mb-6 block mx-auto"
+        className="btn-neon px-6 py-3 font-semibold mb-6 block mx-auto"
       >
         ➕ Add New Client
       </motion.button>
 
       {/* Client Table */}
       <motion.div
-        className="overflow-x-auto bg-white/20 backdrop-blur-md p-6 rounded-2xl shadow-2xl"
+        className="overflow-x-auto glass-card p-6"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
       >
         <table className="min-w-full border border-gray-200 rounded-xl overflow-hidden">
-          <thead className="bg-[#4F7E9A] text-white">
+          <thead className="bg-cyan-700 text-white">
             <tr>
               {["Name", "Email", "Phone", "Payment", "GST", "Invoice", "LR", "Deadline", "Actions"].map(
                 (header) => (
@@ -199,8 +229,8 @@ const Homepage = () => {
                   <td className="px-4 py-2">{c.email}</td>
                   <td className="px-4 py-2">{c.phone}</td>
                   <td
-                    className={`px-4 py-2 font-semibold ${
-                      c.payment === "Paid" ? "text-green-600" : "text-red-600"
+                  className={`px-4 py-2 font-semibold ${
+                      c.payment === "Paid" ? "text-green-700" : "text-red-700"
                     }`}
                   >
                     {c.payment}
@@ -212,7 +242,7 @@ const Homepage = () => {
                         href={`http://localhost:5000/${c.invoice.replace(/\\/g, "/")}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="underline text-blue-700 hover:text-blue-900"
+                        className="underline text-cyan-700 hover:text-cyan-900"
                       >
                         View PDF
                       </a>
@@ -232,21 +262,36 @@ const Homepage = () => {
                     )}
                   </td>
                   <td className="px-4 py-2">{c.deadline?.slice(0, 10) || "—"}</td>
-                  <td className="px-4 py-2 space-x-2">
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg shadow-md"
-                      onClick={() => navigate(`/updateclient/${c._id}`)}
-                    >
-                      ✏️ Update
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg shadow-md"
-                      onClick={() => handleDelete(c._id)}
-                    >
-                      🗑️ Delete
-                    </motion.button>
+                  <td className="px-4 py-2">
+                    <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full max-w-[220px] mx-auto">
+                      <motion.button
+                        whileHover={{ scale: 1.01 }}
+                        className="bg-emerald-600/90 hover:bg-emerald-600 text-white rounded-full shadow-neon w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center"
+                        onClick={() => navigate(`/updateclient/${c._id}`)}
+                        aria-label="Update"
+                        title="Update"
+                      >
+                        <span className="text-base sm:text-lg">✏️</span>
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.01 }}
+                        className="bg-rose-600/90 hover:bg-rose-600 text-white rounded-full shadow-neon w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center"
+                        onClick={() => handleDelete(c._id)}
+                        aria-label="Delete"
+                        title="Delete"
+                      >
+                        <span className="text-base sm:text-lg">🗑️</span>
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.01 }}
+                        className="bg-cyan-600/90 hover:bg-cyan-600 text-white rounded-full shadow-neon w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center"
+                        onClick={() => handleSendReminder(c._id)}
+                        aria-label="Send reminder"
+                        title="Send reminder"
+                      >
+                        <span className="text-base sm:text-lg">🔔</span>
+                      </motion.button>
+                    </div>
                   </td>
                 </motion.tr>
               ))

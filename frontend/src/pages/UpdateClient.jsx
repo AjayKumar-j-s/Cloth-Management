@@ -83,101 +83,111 @@ const UpdateClient = () => {
   if (loading) return <p className="p-6">Loading client details...</p>;
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Update Client</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="min-h-screen flex items-center justify-center p-6">
+      <div className="glass-strong p-8 w-full max-w-xl">
+      <h2 className="text-2xl font-bold mb-6 text-cyan-300 drop-shadow-neon">✏️ Update Client</h2>
+      <form onSubmit={handleSubmit} className="space-y-4 text-slate-900">
+        <label className="form-label">Client Name</label>
         <input
           type="text"
           name="name"
           value={formData.name}
           onChange={handleChange}
           required
-          className="border p-2 w-full"
+          className="form-control"
           placeholder="Name"
         />
 
+        <label className="form-label">Deadline</label>
         <input
           type="date"
           name="deadline"
           value={formData.deadline}
           onChange={handleChange}
           required
-          className="border p-2 w-full"
+          className="form-control"
         />
 
+        <label className="form-label">Contact</label>
         <input
           type="text"
           name="contact"
           value={formData.contact}
           onChange={handleChange}
           required
-          className="border p-2 w-full"
+          className="form-control"
           placeholder="Contact"
         />
 
+        <label className="form-label">Email</label>
         <input
           type="email"
           name="email"
           value={formData.email}
           onChange={handleChange}
           required
-          className="border p-2 w-full"
+          className="form-control"
           placeholder="Email"
         />
 
+        <label className="form-label">Phone</label>
         <input
           type="tel"
           name="phone"
           value={formData.phone}
           onChange={handleChange}
           required
-          className="border p-2 w-full"
+          className="form-control"
           placeholder="Phone"
         />
 
+        <label className="form-label">GST</label>
         <input
           type="text"
           name="gst"
           value={formData.gst}
           onChange={handleChange}
           required
-          className="border p-2 w-full"
+          className="form-control"
           placeholder="GST"
         />
 
+        <label className="form-label">Address</label>
         <textarea
           name="address"
           value={formData.address}
           onChange={handleChange}
           required
-          className="border p-2 w-full"
+          className="form-control"
           placeholder="Address"
         />
 
+        <label className="form-label">Payment Status</label>
         <select
           name="payment"
           value={formData.payment}
           onChange={handleChange}
-          className="border p-2 w-full"
+          className="form-control"
         >
           <option value="Not Paid">Not Paid</option>
           <option value="Paid">Paid</option>
         </select>
 
         <div>
-          <label className="block mb-1">Invoice (PDF)</label>
-          <input type="file" name="invoice" accept="application/pdf" onChange={handleFileChange} />
+          <label className="form-label">Invoice (PDF)</label>
+          <input className="w-full p-2 rounded-md bg-white text-slate-900 border border-slate-300" type="file" name="invoice" accept="application/pdf" onChange={handleFileChange} />
         </div>
 
         <div>
-          <label className="block mb-1">LR (Image)</label>
-          <input type="file" name="lr" accept="image/*" onChange={handleFileChange} />
+          <label className="form-label">LR (Image)</label>
+          <input className="w-full p-2 rounded-md bg-white text-slate-900 border border-slate-300" type="file" name="lr" accept="image/*" onChange={handleFileChange} />
         </div>
 
-        <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">
+        <button type="submit" className="bg-cyan-700 hover:bg-cyan-800 transition-colors text-white px-4 py-2 rounded-lg shadow-neon">
           Update
         </button>
       </form>
+      </div>
     </div>
   );
 };

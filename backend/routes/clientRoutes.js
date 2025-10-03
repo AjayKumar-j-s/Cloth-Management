@@ -1,6 +1,7 @@
 import express from "express";
 import multer from "multer";
 import Client from "../models/Client.js";
+import { sendPaymentReminder } from "../config/emailService.js";
 
 const router = express.Router();
 
@@ -144,3 +145,25 @@ router.delete("/:id", async (req, res) => {
 });
 
 export default router;
+
+/* ============================================================
+   SEND PAYMENT REMINDER (Manual trigger)
+   POST /api/clients/:id/send-reminder
+============================================================ */
+router.post("/:id/send-reminder", async (req, res) => {
+  try {
+    const client = await Client.findById(req.params.id);
+    if (!client) {
+      return res.status(404).json({ success: false, message: "Client not found" });
+    }
+
+    const emailSent = await sendPaymentReminder(client);
+    if (emailSent) {
+      return res.json({ success: true, message: `Reminder sent to ${client.email}` });
+    }
+    return res.status(500).json({ success: false, message: "Failed to send reminder" });
+  } catch (err) {
+    console.error("Manual reminder error:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
