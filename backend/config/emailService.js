@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
 // Create a transporter using SMTP
 const transporter = nodemailer.createTransport({
@@ -41,6 +41,4 @@ const sendPaymentReminder = async (client) => {
     }
 };
 
-module.exports = {
-    sendPaymentReminder
-};
+export { sendPaymentReminder };

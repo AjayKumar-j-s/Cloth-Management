@@ -1,5 +1,5 @@
-const Client = require('../models/Client');
-const { sendPaymentReminder } = require('../config/emailService');
+import Client from '../models/Client.js';
+import { sendPaymentReminder } from '../config/emailService.js';
 
 // Store the last notification dates in memory to prevent duplicate notifications
 const lastNotificationDates = new Map();
@@ -42,6 +42,4 @@ const checkUnpaidClients = async () => {
     }
 };
 
-module.exports = {
-    checkUnpaidClients
-};
+export { checkUnpaidClients };
